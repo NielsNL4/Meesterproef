@@ -14,17 +14,18 @@ public class Fort : MonoBehaviour
     bool playerIsInRange;
     float shootDuration = 1;
     float currentDuration;
-    public Transform emittor;
+    [SerializeField]
+    Transform emittor;
     Vector3 cp;
-    public GameObject projectile;
+
+    [SerializeField]
+    GameObject projectile;
 
     void Start()
     {
         target = GameObject.FindWithTag("Player").transform;
-
     }
 
-    // Update is called once per frame
     void Update()
     {
         distToPlayer = Vector3.Distance(transform.position, target.position);

@@ -4,25 +4,21 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public Rigidbody projectile;
-    public int lineSegment = 10;
+    [SerializeField]
+    Rigidbody projectile;
 
-    public GameObject rightAim;
-    public GameObject leftAim;
+    GameObject rightAim;
+    GameObject leftAim;
 
-    private Camera cam;
-    public Camera camRight;
-    public Camera CamLeft;
+    Camera cam;
+    [SerializeField]
+    Camera camRight;
+    [SerializeField]
+    Camera CamLeft;
 
     float shootPower = 45;
 
     Renderer sails;
-
-    Material sailsMat;
-
-    Color sailColor = Color.white;
-
-    // public ParticleSystem smoke;
 
     bool isLeft;
     bool armed;
@@ -42,7 +38,6 @@ public class Projectile : MonoBehaviour
     List<Transform> leftEmittors = new List<Transform>();
     List<Transform> rightEmittors = new List<Transform>();
 
-    // Start is called before the first frame update
     void Start()
     {
         cam = Camera.main;

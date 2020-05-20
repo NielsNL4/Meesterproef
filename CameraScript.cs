@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    // [HideInInspector]
-    public Transform target;
+    [SerializeField]
+    Transform target;
 
-    public Transform LockOnTarget;
+    float smoothSpeed = .125f;
 
-    public float smoothSpeed = .125f;
-    public Vector3 offset;
+    [SerializeField]
+    Vector3 offset;
 
     private void Start() {
         target = GameObject.FindGameObjectWithTag("Player").transform;

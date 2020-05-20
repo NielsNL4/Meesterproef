@@ -12,7 +12,6 @@ public class HealthBar : MonoBehaviour
     {
         slider = GetComponent<Slider>();
         slider.maxValue = transform.parent.transform.parent.GetComponent<Fort>().health;
-        // Debug.Log(slider.name);
     }
 
     private void Update() {

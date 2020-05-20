@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class WaterPlaneGen : MonoBehaviour
 {
-
-    public float size = 1;
-    public int gridSize = 16;
+    [SerializeField]
+    float size = 1;
+    [SerializeField]
+    int gridSize = 16;
 
     MeshFilter filter;
 

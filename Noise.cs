@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class Noise : MonoBehaviour
 {
-    public float power = 3;
-    public float scale = 1;
-    public float timeScale = 1;
+    [SerializeField]
+    float power = 3;
+    [SerializeField]
+    float scale = 1;
+    [SerializeField]
+    float timeScale = 1;
 
-    private float offsetX;
-    private float offsetY;
-    private MeshFilter mf;
+    float offsetX;
+    float offsetY;
+    MeshFilter mf;
     // Start is called before the first frame update
     void Start()
     {

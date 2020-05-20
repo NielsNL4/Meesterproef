@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class FloatScript : MonoBehaviour
 {
-
-    public float waterLevel = 0.0f;
-    public float floatTreshold = 2.0f;
-    public float waterDensity = 0.125f;
-    public float downForce = 4.0f;
+    [SerializeField]
+    float waterLevel = 0.0f;
+    [SerializeField]
+    float floatTreshold = 2.0f;
+    [SerializeField]
+    float waterDensity = 0.125f;
+    [SerializeField]
+    float downForce = 4.0f;
 
     float forceFactor;
     Vector3 floatForce;
