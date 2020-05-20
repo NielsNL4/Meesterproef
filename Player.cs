@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     float steerFactor;
     public GameObject Rudder;
 
+    int health = 100;
+
     void Update() {
         Balance();
         Movement();
@@ -47,5 +49,12 @@ public class Player : MonoBehaviour
 
         // To move the physical rudder wheel on the deck
         Rudder.transform.Rotate(Vector3.down, steerFactor * steerSpeed * 5f);
+    }
+
+    public void TakeDamage(int amount){
+        health -= amount;
+        Debug.Log("Player HP: " + health);
+        if(health <= 0)
+            Destroy(this.gameObject);
     }
 }

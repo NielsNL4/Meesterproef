@@ -5,11 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public Rigidbody projectile;
-    // public GameObject cursor;
-    // public Transform shootPoint;
-    // public LayerMask layer;
-    // public LineRenderer lineVisual;
-    // public int lineSegment = 10;
+    public int lineSegment = 10;
 
     public GameObject rightAim;
     public GameObject leftAim;
@@ -18,12 +14,27 @@ public class Projectile : MonoBehaviour
     public Camera camRight;
     public Camera CamLeft;
 
-    public float shootPower = 12;
+    float shootPower = 45;
+
+    Renderer sails;
+
+    Material sailsMat;
+
+    Color sailColor = Color.white;
 
     // public ParticleSystem smoke;
 
     bool isLeft;
     bool armed;
+
+    float cannonRotation;
+
+    float cooldown = 3f;
+
+    float radianAngle;
+    float g;
+    float angle;
+    float velocity;
 
     Transform leftCannons;
     Transform rightCannons;
@@ -35,12 +46,14 @@ public class Projectile : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
-        // lineVisual.positionCount = lineSegment;
+        cannonRotation = 0f;
 
         leftCannons = GameObject.FindGameObjectWithTag("Left Cannons").transform;
         rightCannons = GameObject.FindGameObjectWithTag("Right Cannons").transform;
 
         Debug.Log(leftCannons);
+
+        g = Mathf.Abs(Physics.gravity.y);
 
         for (int i = 0; i < leftCannons.childCount; i++)
         {
@@ -49,10 +62,11 @@ public class Projectile : MonoBehaviour
             Debug.Log(leftEmittors);
         }
 
-        Debug.Log(leftEmittors[1].position);
+        sails = GameObject.Find("Sails").GetComponent<Renderer>();
+        
     }
 
-    // Update is called once per frame
+    // Update is called once per framec
     void Update()
     {
         LaunchProjectile();
@@ -66,92 +80,72 @@ public class Projectile : MonoBehaviour
             armed = !armed;
         }
 
-        // if(Input.GetMouseButton(1) && armed){
-        //     Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
-        //     RaycastHit hit;
-        //     Debug.DrawRay(camRay.origin, camRay.direction * 100, Color.green);
-        //     if (Physics.Raycast(camRay.origin, camRay.direction, out hit, 100))
-        //     {
-        //         if(hit.collider.name == "RightRange"){
-        //             rightAim.SetActive(true);
-        //             leftAim.SetActive(false);
-        //         }
-        //         else if(hit.collider.name == "LeftRange"){
-        //             leftAim.SetActive(true);
-        //             rightAim.SetActive(false);
-        //         }else{
-        //             leftAim.SetActive(false);
-        //             rightAim.SetActive(false);
-        //         }
-        //         lineVisual.enabled = true;
-        //         cursor.SetActive(true);
-        //         cursor.transform.position = hit.point + Vector3.up * 0.1f;
-
-        //         Vector3 vo = CalculateVelocty(hit.point, shootPoint.position, 1f);
-
-        //         Visualize(vo);
-
-        //         // transform.rotation = Quaternion.LookRotation(vo);
-
-        //         if (Input.GetMouseButtonDown(0))
-        //         {
-        //             smoke.Play();
-        //             Rigidbody obj = Instantiate(projectile, shootPoint.position, Quaternion.identity);
-        //             obj.velocity = vo;
-        //         }
-        //     }else{
-        //         lineVisual.enabled = false;
-        //         cursor.SetActive(false);
-        //         leftAim.SetActive(false);
-        //         rightAim.SetActive(false);
-        //     }
-        // }else{
-        //     lineVisual.enabled = false;
-        //     cursor.SetActive(false);
-            
-        // }
+        cooldown -= Time.deltaTime;
 
         if(armed){
-                cam.enabled = false;
-                if(isLeft){
-                    camRight.enabled = false;
-                    CamLeft.enabled = true;
-                    leftAim.SetActive(true);
-                    rightAim.SetActive(false);
-                }else if(!isLeft){
-                    camRight.enabled = true;
-                    CamLeft.enabled = false;
-                    rightAim.SetActive(true);
-                    leftAim.SetActive(false);
-                }
-                
-                if(Input.GetKeyDown(KeyCode.X)){
-                    isLeft = !isLeft;
-                }
+            Debug.Log(sails.material.color);
+            float lastRotation = cannonRotation;
+            cam.enabled = false;
+            if(isLeft){
+                camRight.enabled = false;
+                CamLeft.enabled = true;
+                leftAim.SetActive(true);
+                rightAim.SetActive(false);
+                // leftCannons.GetComponent<LineRenderer>().enabled = true;
+                rightCannons.GetComponent<LineRenderer>().enabled = false;
+                // RenderArc(leftCannons.gameObject, shootPower * leftCannons.GetChild(0).forward, leftCannons.GetComponent<LineRenderer>());
 
-                if(Input.GetAxis("Mouse ScrollWheel") > 0){
-                    shootPower--;
-                    Debug.Log("Shootpower: " + shootPower);
-                }
-                if(Input.GetAxis("Mouse ScrollWheel") < 0){
-                    shootPower++;
-                    Debug.Log("Shootpower: " + shootPower);
-                }
+            }else if(!isLeft){
+                camRight.enabled = true;
+                CamLeft.enabled = false;
+                rightAim.SetActive(true);
+                leftAim.SetActive(false);
+                leftCannons.GetComponent<LineRenderer>().enabled = false;
+                // rightCannons.GetComponent<LineRenderer>().enabled = true;
+                // RenderArc(rightCannons.gameObject, shootPower * rightCannons.GetChild(0).forward, rightCannons.GetComponent<LineRenderer>());
+            }
+            
+            if(Input.GetKeyDown(KeyCode.X)){
+                isLeft = !isLeft;
+            }
 
+            if(Input.GetAxis("Mouse ScrollWheel") > 0 && cannonRotation > -35){
+                cannonRotation--;
+                Debug.Log("cannon Rot: " + cannonRotation);
+            }
+            if(Input.GetAxis("Mouse ScrollWheel") < 0 && cannonRotation < 0){
+                cannonRotation++;
+                Debug.Log("cannon Rot: " + cannonRotation);
+            }
+            if(cooldown <= 0){
                 if(Input.GetMouseButtonDown(0)){
                     if(isLeft){
-                        // smoke.Play();
                         foreach(Transform emittor in leftEmittors){
                             Rigidbody obj = Instantiate(projectile, emittor.position, Quaternion.identity);
                             obj.velocity = shootPower * emittor.forward;
+                            emittor.GetComponent<ParticleSystem>().Play();
                         }
                     }else if(!isLeft){
-                         foreach(Transform emittor in rightEmittors){
+                            foreach(Transform emittor in rightEmittors){
                             Rigidbody obj = Instantiate(projectile, emittor.position, Quaternion.identity);
                             obj.velocity = shootPower * emittor.forward;
+                            emittor.GetComponent<ParticleSystem>().Play();
                         }
                     }
+                    cooldown = 3;
                 }
+            }
+            
+            if(cannonRotation != lastRotation){
+                Debug.Log("cannon rot is changed");
+                foreach(Transform emittor in leftEmittors){
+                        emittor.localEulerAngles = new Vector3(cannonRotation, 0, 0);
+                    }
+                foreach(Transform emittor in rightEmittors){
+                        emittor.localEulerAngles = new Vector3(cannonRotation, 0, 0);
+                    }
+                lastRotation = cannonRotation;
+            }
                 
         }else{
             cam.enabled = true;
@@ -162,44 +156,37 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    // void Visualize(Vector3 vo)
-    // {
-    //     for (int i = 0; i < lineSegment; i++)
-    //     {
-    //         Vector3 pos = CalculatePosInTime(vo, i / (float)lineSegment);
-    //         lineVisual.SetPosition(i, pos);
-    //     }
-    // }
+    void RenderArc(GameObject emittor, Vector3 vo, LineRenderer lr)
+    {
+        angle = cannonRotation;
+        velocity = vo.magnitude + vo.x + (vo.y / 2) - 1;
+        lr.positionCount = 15;
+        lr.SetPositions(CalculateArcArray());
+    }
 
-    // Vector3 CalculateVelocty(Vector3 target, Vector3 origin, float time)
-    // {
-    //     Vector3 distance = target - origin;
-    //     Vector3 distanceXz = distance;
-    //     distanceXz.y = 0f;
+    Vector3[] CalculateArcArray(){
+        Vector3[] arcArray = new Vector3[15 + 1];
 
-    //     float sY = distance.y;
-    //     float sXz = distanceXz.magnitude;
+        radianAngle = Mathf.Deg2Rad * angle;
+        float maxDistance = (velocity * velocity * Mathf.Sin(2 * radianAngle)) / g;
 
-    //     float Vxz = sXz * time;
-    //     float Vy = (sY / time) + (0.5f * Mathf.Abs(Physics.gravity.y) * time);
+        for (int i = 0; i < 15; i++)
+        {
+            float t = (float)i / (float)10;
+            arcArray[i] = CalculateArcPoint(t, maxDistance);
+        }
 
-    //     Vector3 result = distanceXz.normalized;
-    //     result *= Vxz;
-    //     result.y = Vy;
+        return arcArray;
+        
+    }
 
-    //     return result;
-    // }
+    Vector3 CalculateArcPoint(float t, float maxDistance){
+        float x = t * maxDistance;
+        float y = x * Mathf.Tan(radianAngle) - ((g * x * x) / (2 * velocity * velocity * Mathf.Cos(radianAngle) * Mathf.Cos(radianAngle))) - 1;
+        return new Vector3(0, y, -x);
+    }
 
-    // Vector3 CalculatePosInTime(Vector3 vo, float time)
-    // {
-    //     Vector3 Vxz = vo;
-    //     Vxz.y = 0f;
-
-    //     Vector3 result = shootPoint.position + vo * time;
-    //     float sY = (-0.5f * Mathf.Abs(Physics.gravity.y) * (time * time)) + (vo.y * time) + shootPoint.position.y;
-
-    //     result.y = sY;
-
-    //     return result;
-    // }
+    void ChangeSailColor(float Alpha){
+        sails.material.SetColor("_BaseColor", new Color(1,1,1,Alpha));
+    }
 }

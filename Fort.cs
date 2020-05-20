@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Fort : MonoBehaviour
 {
+    [HideInInspector]
+    public int health = 300;
     Transform target;
-    public float range = 30;
+    float range = 200;
     float distToPlayer;
     float coolDown = 5f;
     bool playerIsInRange;
@@ -14,10 +17,11 @@ public class Fort : MonoBehaviour
     public Transform emittor;
     Vector3 cp;
     public GameObject projectile;
-    // Start is called before the first frame update
+
     void Start()
     {
         target = GameObject.FindWithTag("Player").transform;
+
     }
 
     // Update is called once per frame
@@ -34,7 +38,7 @@ public class Fort : MonoBehaviour
         currentDuration += Time.deltaTime;
 
         cp = new Vector3(((target.position.x + emittor.position.x) / 2),emittor.position.y,((target.position.z + emittor.position.z / 2)));
-        // Debug.Log(cp);
+        
     }
 
     private void OnDrawGizmos() {
@@ -55,6 +59,13 @@ public class Fort : MonoBehaviour
             cannonBall.GetComponent<Rigidbody>().velocity = CalculateVelocty(target.position, emittor.position, 1f);
             coolDown = 5;
         }
+    }
+
+    public void TakeDamage(int amount){
+        health -= amount;
+        Debug.Log("Fort HP: " + health);
+        if(health <= 0)
+            Destroy(this.gameObject);
     }
 
      Vector3 CalculateVelocty(Vector3 target, Vector3 origin, float time)
