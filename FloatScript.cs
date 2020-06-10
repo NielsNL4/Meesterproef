@@ -5,16 +5,16 @@ using UnityEngine;
 public class FloatScript : MonoBehaviour
 {
     [SerializeField]
-    float waterLevel = 0.0f;
+    private float waterLevel = 0.0f;
     [SerializeField]
-    float floatTreshold = 2.0f;
+    private float floatTreshold = 2.0f;
     [SerializeField]
-    float waterDensity = 0.125f;
+    private float waterDensity = 0.125f;
     [SerializeField]
-    float downForce = 4.0f;
+    private float downForce = 4.0f;
 
-    float forceFactor;
-    Vector3 floatForce;
+    private float forceFactor;
+    private Vector3 floatForce;
 
     // Update is called once per frame
     void FixedUpdate()

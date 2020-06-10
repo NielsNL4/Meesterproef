@@ -5,11 +5,11 @@ using UnityEngine;
 public class WaterPlaneGen : MonoBehaviour
 {
     [SerializeField]
-    float size = 1;
+    private float size = 1;
     [SerializeField]
-    int gridSize = 16;
+    private int gridSize = 16;
 
-    MeshFilter filter;
+    private MeshFilter filter;
 
     [ContextMenu("Run Script")]
     void RunScript(){
@@ -19,6 +19,7 @@ public class WaterPlaneGen : MonoBehaviour
     {
         filter = GetComponent<MeshFilter>();
         filter.mesh = GenerateMesh();
+        gameObject.GetComponent<MeshCollider>().sharedMesh = filter.mesh;
 
     }
 

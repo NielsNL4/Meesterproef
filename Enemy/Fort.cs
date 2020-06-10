@@ -7,19 +7,18 @@ public class Fort : MonoBehaviour
 {
     [HideInInspector]
     public int health = 300;
-    Transform target;
-    float range = 200;
-    float distToPlayer;
-    float coolDown = 5f;
-    bool playerIsInRange;
-    float shootDuration = 1;
-    float currentDuration;
+    private Transform target;
+    private float range = 200;
+    private float distToPlayer;
+    private float coolDown = 5f;
+    private bool playerIsInRange;
+    private float shootDuration = 1;
+    private float currentDuration;
     [SerializeField]
-    Transform emittor;
-    Vector3 cp;
-
+    private Transform emittor;
+    private Vector3 cp;
     [SerializeField]
-    GameObject projectile;
+    private GameObject projectile;
 
     void Start()
     {
@@ -64,12 +63,11 @@ public class Fort : MonoBehaviour
 
     public void TakeDamage(int amount){
         health -= amount;
-        Debug.Log("Fort HP: " + health);
         if(health <= 0)
             Destroy(this.gameObject);
     }
 
-     Vector3 CalculateVelocty(Vector3 target, Vector3 origin, float time)
+    Vector3 CalculateVelocty(Vector3 target, Vector3 origin, float time)
     {
         Vector3 distance = target - origin;
         Vector3 distanceXz = distance;

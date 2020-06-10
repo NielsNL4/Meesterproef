@@ -5,15 +5,15 @@ using UnityEngine;
 public class Noise : MonoBehaviour
 {
     [SerializeField]
-    float power = 3;
+    private float power = 3;
     [SerializeField]
-    float scale = 1;
+    private float scale = 1;
     [SerializeField]
-    float timeScale = 1;
+    private float timeScale = 1;
 
-    float offsetX;
-    float offsetY;
-    MeshFilter mf;
+    private float offsetX;
+    private float offsetY;
+    private MeshFilter mf;
     // Start is called before the first frame update
     void Start()
     {

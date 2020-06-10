@@ -5,12 +5,12 @@ using UnityEngine;
 public class CameraScript : MonoBehaviour
 {
     [SerializeField]
-    Transform target;
+    private Transform target;
 
-    float smoothSpeed = .125f;
+    private float smoothSpeed = .125f;
 
     [SerializeField]
-    Vector3 offset;
+    private Vector3 offset;
 
     private void Start() {
         target = GameObject.FindGameObjectWithTag("Player").transform;
@@ -19,6 +19,7 @@ public class CameraScript : MonoBehaviour
         Vector3 desPos = target.position + offset;
         Vector3 smoothedPos = Vector3.Lerp(transform.position, desPos, smoothSpeed);
         transform.position = smoothedPos;
+
 
         transform.LookAt(target);
     }

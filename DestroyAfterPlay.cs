@@ -5,7 +5,7 @@ using UnityEngine;
 public class DestroyAfterPlay : MonoBehaviour
 {
 
-    ParticleSystem ps;
+    private ParticleSystem ps;
 
     private void Start() {
         ps = gameObject.GetComponent<ParticleSystem>();
