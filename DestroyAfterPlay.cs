@@ -10,7 +10,7 @@ public class DestroyAfterPlay : MonoBehaviour
     private void Start() {
         ps = gameObject.GetComponent<ParticleSystem>();
     }
-    void Update()
+    private void Update()
     {
         if(ps.isPlaying == false){
             Destroy(this.gameObject);

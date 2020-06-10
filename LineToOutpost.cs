@@ -16,7 +16,7 @@ public class LineToOutpost : MonoBehaviour
     private float closestDistanceSqr = Mathf.Infinity;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         lr = GetComponent<LineRenderer>();
         
@@ -27,7 +27,7 @@ public class LineToOutpost : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         for (int i = 0; i < outposts.Length; i++)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {   
@@ -78,8 +79,9 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int amount){
         health -= amount;
-        if(health <= 0)
-            Destroy(this.gameObject);
+        if(health <= 0){
+            SceneManager.LoadScene(0);
+        }
     }
 
     public void addPoints(int amount){

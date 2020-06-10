@@ -31,7 +31,7 @@ public class Projectile : MonoBehaviour
     private GameObject[] rightLines;
     private GameObject[] leftLines;
 
-    void Start()
+    private void Start()
     {
         cam = Camera.main;
         cannonRotation = 0f;
@@ -52,12 +52,12 @@ public class Projectile : MonoBehaviour
     }
 
     // Update is called once per framec
-    void Update()
+    private void Update()
     {
         LaunchProjectile();
     }
 
-    void LaunchProjectile()
+    private void LaunchProjectile()
     {
         
 

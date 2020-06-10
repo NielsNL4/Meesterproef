@@ -17,7 +17,7 @@ public class FloatScript : MonoBehaviour
     private Vector3 floatForce;
 
     // Update is called once per frame
-    void FixedUpdate()
+    private void FixedUpdate()
     {
        forceFactor = 1f - ((transform.position.y - waterLevel) / floatTreshold);
 

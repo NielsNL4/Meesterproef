@@ -35,11 +35,11 @@ public class GameManager : MonoBehaviour
         }
 
         pointText.text = "Score: " + currentScore.ToString();
-        highScoreText.text = "Highscore: " + highscore.ToString();
+        highScoreText.text = "Highscore: " + PlayerPrefs.GetInt("HighScore", currentScore);
 
-        if(currentScore > PlayerPrefs.GetInt("highscore", highscore)){
+        if(currentScore > PlayerPrefs.GetInt("HighScore", 0)){
             highscore = currentScore;
-            PlayerPrefs.SetInt("highscore", highscore);
+            PlayerPrefs.SetInt("HighScore", currentScore);
             PlayerPrefs.Save();
         }
     }

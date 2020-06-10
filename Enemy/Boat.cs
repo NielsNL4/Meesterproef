@@ -56,7 +56,7 @@ public class Boat : MonoBehaviour
     private GameObject projectile;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         target = GameObject.FindWithTag("Player").transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
@@ -69,7 +69,7 @@ public class Boat : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         Balance();
         speed = 30f * Time.deltaTime;
@@ -90,7 +90,7 @@ public class Boat : MonoBehaviour
         }
     }
 
-    void Wander(float Time){
+    private void Wander(float Time){
 
         wanderTime -= Time;
 
@@ -113,7 +113,7 @@ public class Boat : MonoBehaviour
         
     }
 
-     void Balance() {
+    private void Balance() {
         if (!m_COM) {
             m_COM = new GameObject ("COM").transform;
             m_COM.SetParent (transform);
@@ -154,11 +154,11 @@ public class Boat : MonoBehaviour
         }
     }
 
-    void DropLoot(){
+    private void DropLoot(){
         Instantiate(loot, transform.position, Quaternion.identity);
     }
 
-    void Attack(){
+    private void Attack(){
         if(cooldown > 0){
             cooldown -= Time.deltaTime;
         }else if(cooldown <= 0){

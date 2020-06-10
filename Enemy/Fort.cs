@@ -20,12 +20,15 @@ public class Fort : MonoBehaviour
     [SerializeField]
     private GameObject projectile;
 
-    void Start()
+    [SerializeField]
+    private Transform loot;
+
+    private void Start()
     {
         target = GameObject.FindWithTag("Player").transform;
     }
 
-    void Update()
+    private void Update()
     {
         distToPlayer = Vector3.Distance(transform.position, target.position);
         if(range > distToPlayer){
@@ -50,7 +53,7 @@ public class Fort : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, range);
     }
 
-    void Attack(){
+    private void Attack(){
         if(coolDown > 0){
             coolDown -= Time.deltaTime;
         }
@@ -63,11 +66,18 @@ public class Fort : MonoBehaviour
 
     public void TakeDamage(int amount){
         health -= amount;
-        if(health <= 0)
+        if(health <= 0){
+            DropLoot();
             Destroy(this.gameObject);
+        }
     }
 
-    Vector3 CalculateVelocty(Vector3 target, Vector3 origin, float time)
+    private void DropLoot(){
+        Vector3 dropLoc = new Vector3(transform.position.x + 70, transform.position.y - 5, transform.position.z);
+        Instantiate(loot, dropLoc, Quaternion.identity);
+    }
+
+    private Vector3 CalculateVelocty(Vector3 target, Vector3 origin, float time)
     {
         Vector3 distance = target - origin;
         Vector3 distanceXz = distance;
